@@ -1,6 +1,7 @@
 'use client';
 
-import { mockUser } from '@/lib/mock/data';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface HeaderProps {
   onSync?: () => void;
@@ -8,7 +9,13 @@ interface HeaderProps {
 }
 
 export function Header({ onSync, isSyncing = false }: HeaderProps) {
-  const user = mockUser;
+  const router = useRouter();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
 
   return (
     <header className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white">
@@ -28,13 +35,15 @@ export function Header({ onSync, isSyncing = false }: HeaderProps) {
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">{user.email}</span>
+          <span className="text-sm text-gray-600">{user?.email || '게스트'}</span>
           <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm">
-            {user.name.charAt(0)}
+            {user?.username?.charAt(0).toUpperCase() || 'G'}
           </div>
         </div>
 
-        <button className="text-sm text-gray-600 hover:text-gray-900">로그아웃</button>
+        <button onClick={handleLogout} className="text-sm text-gray-600 hover:text-gray-900">
+          로그아웃
+        </button>
       </div>
     </header>
   );
