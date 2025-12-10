@@ -15,9 +15,7 @@ export function MailList({ mails, selectedMailId, onSelectMail }: MailListProps)
       <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200">
         <input type="checkbox" className="w-4 h-4" />
         <span className="text-sm text-gray-600">전체선택</span>
-        <button className="ml-auto text-sm text-gray-600 hover:text-red-600">
-          🗑️ 삭제
-        </button>
+        <button className="ml-auto text-sm text-gray-600 hover:text-red-600">🗑️ 삭제</button>
       </div>
 
       {/* Mail List */}
@@ -70,31 +68,25 @@ function MailListItem({ mail, isSelected, onSelect }: MailListItemProps) {
       }`}
       onClick={onSelect}
     >
-      <input
-        type="checkbox"
-        className="mt-1 w-4 h-4"
-        onClick={(e) => e.stopPropagation()}
-      />
+      <input type="checkbox" className="mt-1 w-4 h-4" onClick={(e) => e.stopPropagation()} />
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className={`text-sm ${mail.isRead ? 'text-gray-600' : 'font-semibold text-gray-900'}`}>
+          <span
+            className={`text-sm ${mail.isRead ? 'text-gray-600' : 'font-semibold text-gray-900'}`}
+          >
             {mail.from.name}
           </span>
           {mail.isStarred && <span className="text-yellow-500">⭐</span>}
-          {!mail.isRead && (
-            <span className="w-2 h-2 bg-blue-500 rounded-full" />
-          )}
+          {!mail.isRead && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
         </div>
-        <div className={`text-sm truncate ${mail.isRead ? 'text-gray-600' : 'font-medium text-gray-900'}`}>
+        <div
+          className={`text-sm truncate ${mail.isRead ? 'text-gray-600' : 'font-medium text-gray-900'}`}
+        >
           {mail.subject}
         </div>
-        <div className="text-xs text-gray-500 truncate mt-0.5">
-          {mail.bodyPreview}
-        </div>
+        <div className="text-xs text-gray-500 truncate mt-0.5">{mail.bodyPreview}</div>
       </div>
-      <div className="text-xs text-gray-500 whitespace-nowrap">
-        {formatTime(mail.receivedAt)}
-      </div>
+      <div className="text-xs text-gray-500 whitespace-nowrap">{formatTime(mail.receivedAt)}</div>
     </li>
   );
 }

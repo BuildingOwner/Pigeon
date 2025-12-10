@@ -6,11 +6,7 @@ import { StatusBar } from '@/components/layout/StatusBar';
 import { FolderTree } from '@/components/folder/FolderTree';
 import { mockFolders, mockMails, mockSyncStatus } from '@/lib/mock/data';
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MainLayout({ children }: { children: React.ReactNode }) {
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>('folder-1-1');
   const [isSyncing, setIsSyncing] = useState(false);
 
@@ -34,9 +30,7 @@ export default function MainLayout({
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-hidden">
-          {children}
-        </main>
+        <main className="flex-1 overflow-hidden">{children}</main>
       </div>
 
       <StatusBar syncStatus={mockSyncStatus} totalMails={mockMails.length} />

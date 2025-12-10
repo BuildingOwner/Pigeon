@@ -12,9 +12,7 @@ interface FolderTreeProps {
 export function FolderTree({ folders, selectedFolderId, onSelectFolder }: FolderTreeProps) {
   return (
     <div className="py-2">
-      <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">
-        폴더
-      </div>
+      <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">폴더</div>
       <ul className="space-y-0.5">
         {folders.map((folder) => (
           <FolderTreeItem
@@ -46,9 +44,7 @@ function FolderTreeItem({ folder, selectedFolderId, onSelectFolder, depth }: Fol
     <li>
       <div
         className={`flex items-center gap-1 px-3 py-1.5 cursor-pointer transition-colors ${
-          isSelected
-            ? 'bg-blue-100 text-blue-700'
-            : 'hover:bg-gray-100 text-gray-700'
+          isSelected ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
         }`}
         style={{ paddingLeft: `${12 + depth * 16}px` }}
         onClick={() => onSelectFolder(folder.id)}

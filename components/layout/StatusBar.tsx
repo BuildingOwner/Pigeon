@@ -44,11 +44,7 @@ export function StatusBar({ syncStatus, totalMails }: StatusBarProps) {
         <span>|</span>
         <span>총 {totalMails}개 메일</span>
       </div>
-      {syncStatus.lastSyncAt && (
-        <div>
-          마지막 확인: {getLastSyncText()}
-        </div>
-      )}
+      {syncStatus.lastSyncAt && <div>마지막 확인: {getLastSyncText()}</div>}
     </footer>
   );
 }

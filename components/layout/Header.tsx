@@ -34,9 +34,7 @@ export function Header({ onSync, isSyncing = false }: HeaderProps) {
           </div>
         </div>
 
-        <button className="text-sm text-gray-600 hover:text-gray-900">
-          로그아웃
-        </button>
+        <button className="text-sm text-gray-600 hover:text-gray-900">로그아웃</button>
       </div>
     </header>
   );

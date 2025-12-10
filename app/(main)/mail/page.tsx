@@ -31,11 +31,7 @@ export default function MailPage() {
 
       {/* Mail Detail */}
       <div className="flex-1 bg-white">
-        <MailDetail
-          mail={selectedMail}
-          onDelete={handleDelete}
-          onMove={handleMove}
-        />
+        <MailDetail mail={selectedMail} onDelete={handleDelete} onMove={handleMove} />
       </div>
     </div>
   );

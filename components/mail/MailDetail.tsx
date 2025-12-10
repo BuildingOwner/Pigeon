@@ -35,9 +35,7 @@ export function MailDetail({ mail, onMove, onDelete }: MailDetailProps) {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900 mb-3">
-          {mail.subject}
-        </h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-3">{mail.subject}</h2>
         <div className="flex items-center gap-4 text-sm text-gray-600">
           <div>
             <span className="text-gray-500">From:</span>{' '}
@@ -56,9 +54,7 @@ export function MailDetail({ mail, onMove, onDelete }: MailDetailProps) {
             ))}
           </div>
         </div>
-        <div className="text-xs text-gray-500 mt-2">
-          {formatDate(mail.receivedAt)}
-        </div>
+        <div className="text-xs text-gray-500 mt-2">{formatDate(mail.receivedAt)}</div>
       </div>
 
       {/* Body */}
