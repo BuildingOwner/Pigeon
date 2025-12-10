@@ -82,14 +82,16 @@ AI 주도 개발의 **실습 대상**으로서의 프로젝트 정의.
 3. **폴더 생성**: 새로운 경로일 경우 자동으로 폴더 구조 생성
 4. **UI 표시**: 트리 구조로 폴더 & 메일 목록 시각화
 
-### 2.3 기술 스택 (예정)
+### 2.3 기술 스택 (확정)
 
 | 영역 | 기술 | 비고 |
 |------|------|------|
-| **Backend** | Python (FastAPI) 또는 Node.js | API 서버, LLM 연동 |
-| **Frontend** | React 또는 Vue | 트리 구조 UI |
-| **Database** | SQLite 또는 MongoDB | 간단한 데이터 저장 |
-| **AI/LLM** | OpenAI API / Claude API / Gemini | 메일 분류 로직 |
+| **Backend** | Django (Python) | API 서버, LLM 연동, ORM |
+| **Frontend** | Next.js + TypeScript | SSR 지원, 트리 구조 UI |
+| **Database** | PostgreSQL | JSONB, ArrayField, Django 통합 |
+| **AI/LLM** | Gemini 2.5 Flash + LangChain | 메일 분류 로직, 모델 교체 용이 |
+| **상태관리** | Zustand | 간단하고 가벼움 |
+| **스타일링** | Tailwind CSS | 빠른 UI 개발 |
 
 ---
 

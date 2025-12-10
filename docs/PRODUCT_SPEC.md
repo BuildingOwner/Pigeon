@@ -872,10 +872,10 @@ Response: Redirect to /dashboard (with session cookie)
 
 | 영역 | 선택 | 이유 |
 |------|------|------|
-| **Frontend** | React + TypeScript | 컴포넌트 기반, 트리 UI 라이브러리 풍부 |
-| **Backend** | FastAPI (Python) | LLM 라이브러리 연동 용이, 빠른 개발 |
-| **Database** | SQLite | 설정 간단, 해커톤에 적합 |
-| **LLM** | OpenAI GPT-4o-mini | 비용 효율적, 빠른 응답 |
+| **Frontend** | Next.js + TypeScript | SSR 지원, React 기반, 풍부한 에코시스템 |
+| **Backend** | Django (Python) | 풀스택 프레임워크, ORM 강력, Admin 내장 |
+| **Database** | PostgreSQL | JSONB, ArrayField, Django 통합 우수 |
+| **LLM** | Gemini 2.5 Flash + LangChain | 비용 효율적, 모델 교체 용이 |
 | **스타일링** | Tailwind CSS | 빠른 UI 개발 |
 | **Gmail 연동** | Google Gmail API | 공식 API, OAuth2 지원 |
 | **상태관리** | Zustand | 간단하고 가벼움 |
@@ -999,17 +999,19 @@ Response: Redirect to /dashboard (with session cookie)
 
 | # | 이슈 | 선택지 | 결정 |
 |---|------|--------|------|
-| 1 | LLM 제공자 | OpenAI / Claude / Gemini | OpenAI (GPT-4o-mini) |
-| 2 | 폴더 깊이 제한 | 제한 없음 / 최대 5단계 | TBD |
-| 3 | 분류 실패 처리 | "미분류" 폴더 / 재시도 | "미분류" 폴더 |
+| 1 | LLM 제공자 | OpenAI / Claude / Gemini | **Gemini 2.5 Flash + LangChain** |
+| 2 | 폴더 깊이 제한 | 제한 없음 / 최대 5단계 | **최대 5단계** |
+| 3 | 분류 실패 처리 | "미분류" 폴더 / 재시도 | **1회 재시도 후 "미분류"** |
 | 4 | 동기화 범위 (라벨) | 받은편지함만 / 전체 라벨 | 받은편지함만 (MVP) |
 | 5 | 동기화 범위 (기간) | 전체 / 1년 / 6개월 / 3개월 | **6개월** |
-| 6 | 메일 본문 저장 | Snippet만 / Full body | Full body |
-| 7 | Gmail API 할당량 | 일일 할당량 관리 전략 | TBD |
-| 8 | 초기 동기화 배치 크기 | 10개 / 20개 / 50개 | 20개 |
-| 9 | 백그라운드 폴링 주기 | 30초 / 1분 / 5분 | TBD |
-| 10 | 새 메일 분류 방식 | 즉시 1개씩 / 5개 모아서 배치 | TBD |
+| 6 | 메일 본문 저장 | Snippet만 / Full body / 하이브리드 | **하이브리드** (HTML 저장 + 이미지/첨부 참조) |
+| 7 | Gmail API 할당량 | 일일 할당량 관리 전략 | **단순 Rate Limiting** |
+| 8 | 초기 동기화 배치 크기 | 10개 / 20개 / 50개 | **20개** |
+| 9 | 백그라운드 폴링 주기 | 30초 / 1분 / 3분 / 5분 | **3분** |
+| 10 | 새 메일 분류 방식 | 즉시 1개씩 / 5개 모아서 배치 | **즉시 1개씩** |
 | 11 | 초기 동기화 UX | 전체화면 대기 / 즉시 메인화면 | **즉시 메인화면** |
+| 12 | Database | MySQL / PostgreSQL / MongoDB | **PostgreSQL** |
+| 13 | Next.js 라우터 | App Router / Pages Router | **App Router** |
 
 ---
 
