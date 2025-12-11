@@ -1,6 +1,26 @@
-import Link from 'next/link'
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useAuthStore } from '@/stores';
 
 export default function LandingPage() {
+  const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuthStore();
+
+  // 이미 인증된 사용자는 /mail로 리다이렉트
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.push('/mail');
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  // 로딩 중이거나 인증된 경우 빈 화면 (리다이렉트 전)
+  if (isLoading || isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-gray-200 bg-white">
