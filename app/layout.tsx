@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { AuthProvider } from '@/components/providers/AuthProvider'
+import { RouteGuard } from '@/components/providers/RouteGuard'
 
 export const metadata: Metadata = {
   title: 'Pigeon - AI 메일 분류 시스템',
@@ -13,7 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          <RouteGuard>{children}</RouteGuard>
+        </AuthProvider>
+      </body>
     </html>
   )
 }

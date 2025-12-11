@@ -16,7 +16,8 @@ export default function CallbackPage() {
       const code = searchParams.get('code');
       const state = searchParams.get('state');
 
-      if (!code || !state) {
+      if (!code) {
+        console.error('No code parameter found');
         router.push('/login');
         return;
       }
@@ -38,8 +39,8 @@ export default function CallbackPage() {
           localStorage.setItem('access_token', access_token);
           localStorage.setItem('refresh_token', refresh_token);
 
-          // 스토어 업데이트
-          login(user, access_token);
+          // 스토어 업데이트 (refreshToken도 포함)
+          login(user, access_token, refresh_token);
 
           // 메일함으로 이동
           router.push('/mail');
@@ -48,6 +49,7 @@ export default function CallbackPage() {
         }
       } catch (error) {
         console.error('OAuth callback error:', error);
+        alert('로그인에 실패했습니다. 다시 시도해주세요.');
         router.push('/login');
       }
     };

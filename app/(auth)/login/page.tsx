@@ -1,11 +1,26 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui';
-import { API_BASE_URL } from '@/lib/constants';
+import { useAuthStore } from '@/stores';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuthStore();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  // 이미 인증된 사용자는 /mail로 리다이렉트
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.push('/mail');
+    }
+  }, [isAuthenticated, isLoading, router]);
+
   const handleGoogleLogin = () => {
+    setIsRedirecting(true);
     window.location.href = `${API_BASE_URL}/auth/google/login/`;
   };
 
@@ -22,8 +37,9 @@ export default function LoginPage() {
           onClick={handleGoogleLogin}
           className="w-full"
           size="lg"
+          disabled={isRedirecting || isLoading}
         >
-          Gmail로 시작하기
+          {isRedirecting ? '로그인 중...' : 'Gmail로 시작하기'}
         </Button>
 
         <p className="text-xs text-gray-500 text-center mt-4">

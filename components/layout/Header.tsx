@@ -14,8 +14,6 @@ export function Header({ onSync, isSyncing = false }: HeaderProps) {
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
     window.location.href = '/login';
   };
 
