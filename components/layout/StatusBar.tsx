@@ -1,50 +1,66 @@
 'use client';
 
-import type { SyncStatus } from '@/types';
+import { SyncStatus } from '@/types';
+import { formatRelativeTime } from '@/lib/utils';
+import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 interface StatusBarProps {
-  syncStatus: SyncStatus;
-  totalMails: number;
+  syncStatus?: SyncStatus | null;
+  totalMailCount?: number;
+  lastSyncAt?: string | null;
 }
 
-export function StatusBar({ syncStatus, totalMails }: StatusBarProps) {
-  const getStatusText = () => {
-    switch (syncStatus.status) {
-      case 'syncing':
-        return `동기화 중... ${syncStatus.progress}%`;
-      case 'classifying':
-        return `분류 중... ${syncStatus.processedMails}/${syncStatus.totalMails}`;
-      case 'completed':
-        return '✓ 동기화 완료';
-      case 'error':
-        return `⚠️ 오류: ${syncStatus.errorMessage}`;
-      default:
-        return '대기 중';
+export function StatusBar({ syncStatus, totalMailCount, lastSyncAt }: StatusBarProps) {
+  const renderSyncStatus = () => {
+    if (!syncStatus) {
+      return (
+        <div className="flex items-center space-x-2">
+          <CheckCircle size={16} className="text-green-600" />
+          <span className="text-sm text-gray-700">동기화 완료</span>
+        </div>
+      );
     }
-  };
 
-  const getLastSyncText = () => {
-    if (!syncStatus.lastSyncAt) return '';
+    if (syncStatus.state === 'in_progress') {
+      return (
+        <div className="flex items-center space-x-2">
+          <Loader2 size={16} className="animate-spin text-primary-600" />
+          <span className="text-sm text-gray-700">
+            동기화 중... {syncStatus.progress.percentage}% ({syncStatus.progress.synced}/{syncStatus.progress.total})
+          </span>
+        </div>
+      );
+    }
 
-    const lastSync = new Date(syncStatus.lastSyncAt);
-    const now = new Date();
-    const diffMs = now.getTime() - lastSync.getTime();
-    const diffSec = Math.floor(diffMs / 1000);
-    const diffMin = Math.floor(diffSec / 60);
+    if (syncStatus.state === 'failed') {
+      return (
+        <div className="flex items-center space-x-2">
+          <AlertCircle size={16} className="text-red-600" />
+          <span className="text-sm text-red-700">동기화 실패</span>
+        </div>
+      );
+    }
 
-    if (diffMin < 1) return '방금 전';
-    if (diffMin < 60) return `${diffMin}분 전`;
-    return lastSync.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+    return (
+      <div className="flex items-center space-x-2">
+        <CheckCircle size={16} className="text-green-600" />
+        <span className="text-sm text-gray-700">동기화 완료</span>
+      </div>
+    );
   };
 
   return (
-    <footer className="flex items-center justify-between px-4 py-2 text-xs text-gray-500 border-t border-gray-200 bg-gray-50">
-      <div className="flex items-center gap-4">
-        <span>{getStatusText()}</span>
-        <span>|</span>
-        <span>총 {totalMails}개 메일</span>
+    <div className="bg-white border-t border-gray-200 px-6 py-3 flex items-center justify-between text-sm">
+      {renderSyncStatus()}
+
+      <div className="flex items-center space-x-4 text-gray-600">
+        {totalMailCount !== undefined && (
+          <span>총 {totalMailCount}개 메일</span>
+        )}
+        {lastSyncAt && (
+          <span>마지막 확인: {formatRelativeTime(lastSyncAt)}</span>
+        )}
       </div>
-      {syncStatus.lastSyncAt && <div>마지막 확인: {getLastSyncText()}</div>}
-    </footer>
+    </div>
   );
 }

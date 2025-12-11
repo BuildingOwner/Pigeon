@@ -1,39 +1,32 @@
 'use client';
 
-import { useState } from 'react';
-import { Header } from '@/components/layout/Header';
-import { StatusBar } from '@/components/layout/StatusBar';
-import { FolderTree } from '@/components/folder/FolderTree';
-import { mockFolders, mockMails, mockSyncStatus } from '@/lib/mock/data';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/stores';
 
-export default function MainLayout({ children }: { children: React.ReactNode }) {
-  const [selectedFolderId, setSelectedFolderId] = useState<string | null>('folder-1-1');
-  const [isSyncing, setIsSyncing] = useState(false);
+export default function MainLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const { isAuthenticated, user } = useAuthStore();
 
-  const handleSync = () => {
-    setIsSyncing(true);
-    setTimeout(() => setIsSyncing(false), 2000);
-  };
+  useEffect(() => {
+    // 클라이언트 사이드에서 인증 확인
+    const token = localStorage.getItem('access_token');
+    if (!token && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, router]);
 
-  return (
-    <div className="flex flex-col h-screen bg-white">
-      <Header onSync={handleSync} isSyncing={isSyncing} />
-
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar - Folder Tree */}
-        <aside className="w-60 border-r border-gray-200 bg-gray-50 overflow-y-auto">
-          <FolderTree
-            folders={mockFolders}
-            selectedFolderId={selectedFolderId}
-            onSelectFolder={setSelectedFolderId}
-          />
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 overflow-hidden">{children}</main>
+  if (!isAuthenticated && !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
       </div>
+    );
+  }
 
-      <StatusBar syncStatus={mockSyncStatus} totalMails={mockMails.length} />
-    </div>
-  );
+  return <>{children}</>;
 }

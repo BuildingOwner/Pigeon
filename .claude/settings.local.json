@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(claude mcp remove:*)",
+      "mcp__Atlassian__getAccessibleAtlassianResources",
+      "mcp__Atlassian__searchJiraIssuesUsingJql",
+      "mcp__Atlassian__getVisibleJiraProjects",
+      "mcp__Atlassian__getConfluenceSpaces",
+      "mcp__Atlassian__getPagesInConfluenceSpace",
+      "mcp__Atlassian-Pigeon__getAccessibleAtlassianResources",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
+      "Bash(git clone:*)",
+      "Bash(git config:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run build:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(gh pr create:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(npm run dev:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "Bash(gh issue create:*)",
+      "Bash(gh issue view:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm install:*)",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_fill_form",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_close"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "enabledMcpjsonServers": [
+    "Atlassian-Pigeon"
+  ]
+}
