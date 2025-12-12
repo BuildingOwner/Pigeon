@@ -59,7 +59,7 @@ export function Header({
 
       <div className="flex-1 md:hidden" />
 
-      <div className="flex items-center space-x-2 md:space-x-4">
+      <div className="flex items-center space-x-2 md:space-x-4 ml-auto">
         {onSync && (
           <Button
             variant="ghost"
