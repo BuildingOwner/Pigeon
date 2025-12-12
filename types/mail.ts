@@ -33,6 +33,7 @@ export interface Mail extends MailListItem {
   recipients: Recipient[];
   body_html: string;
   attachments: Attachment[];
+  classification_reason?: string;
   created_at?: string;
   updated_at?: string;
 }

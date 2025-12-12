@@ -2,15 +2,19 @@
 
 import { SyncStatus } from '@/types';
 import { formatRelativeTime } from '@/lib/utils';
-import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, AlertCircle, Loader2, ChevronUp } from 'lucide-react';
+import { ProgressBar } from '@/components/ui';
 
 interface StatusBarProps {
   syncStatus?: SyncStatus | null;
   totalMailCount?: number;
   lastSyncAt?: string | null;
+  onShowSyncDetail?: () => void;
 }
 
-export function StatusBar({ syncStatus, totalMailCount, lastSyncAt }: StatusBarProps) {
+export function StatusBar({ syncStatus, totalMailCount, lastSyncAt, onShowSyncDetail }: StatusBarProps) {
+  const isInProgress = syncStatus?.state === 'in_progress';
+
   const renderSyncStatus = () => {
     if (!syncStatus) {
       return (
@@ -23,21 +27,34 @@ export function StatusBar({ syncStatus, totalMailCount, lastSyncAt }: StatusBarP
 
     if (syncStatus.state === 'in_progress') {
       return (
-        <div className="flex items-center space-x-2">
-          <Loader2 size={16} className="animate-spin text-primary-600" />
-          <span className="text-sm text-gray-700">
-            동기화 중... {syncStatus.progress.percentage}% ({syncStatus.progress.synced}/{syncStatus.progress.total})
-          </span>
-        </div>
+        <button
+          onClick={onShowSyncDetail}
+          className="flex items-center space-x-3 hover:bg-gray-100 rounded-md px-2 py-1 -ml-2 transition-colors"
+        >
+          <div className="flex items-center space-x-2">
+            <Loader2 size={16} className="animate-spin text-primary-600" />
+            <span className="text-sm text-gray-700">
+              동기화 중... {syncStatus.progress.percentage}%
+            </span>
+          </div>
+          <div className="w-24">
+            <ProgressBar value={syncStatus.progress.percentage} size="sm" />
+          </div>
+          <ChevronUp size={14} className="text-gray-400" />
+        </button>
       );
     }
 
     if (syncStatus.state === 'failed') {
       return (
-        <div className="flex items-center space-x-2">
+        <button
+          onClick={onShowSyncDetail}
+          className="flex items-center space-x-2 hover:bg-gray-100 rounded-md px-2 py-1 -ml-2 transition-colors"
+        >
           <AlertCircle size={16} className="text-red-600" />
           <span className="text-sm text-red-700">동기화 실패</span>
-        </div>
+          <ChevronUp size={14} className="text-gray-400" />
+        </button>
       );
     }
 
@@ -55,7 +72,7 @@ export function StatusBar({ syncStatus, totalMailCount, lastSyncAt }: StatusBarP
 
       <div className="flex items-center space-x-4 text-gray-600">
         {totalMailCount !== undefined && (
-          <span>총 {totalMailCount}개 메일</span>
+          <span>총 {totalMailCount.toLocaleString()}개 메일</span>
         )}
         {lastSyncAt && (
           <span>마지막 확인: {formatRelativeTime(lastSyncAt)}</span>

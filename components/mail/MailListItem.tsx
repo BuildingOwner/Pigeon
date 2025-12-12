@@ -1,25 +1,47 @@
+'use client';
+
 import { MailListItem as MailListItemType } from '@/types';
 import { Star, Paperclip } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatRelativeTime } from '@/lib/utils';
+import { Checkbox } from '@/components/ui';
 
 interface MailListItemProps {
   mail: MailListItemType;
   isSelected?: boolean;
+  isChecked?: boolean;
+  showCheckbox?: boolean;
   onClick?: () => void;
+  onCheckChange?: (checked: boolean) => void;
 }
 
-export function MailListItem({ mail, isSelected, onClick }: MailListItemProps) {
+export function MailListItem({
+  mail,
+  isSelected,
+  isChecked = false,
+  showCheckbox = false,
+  onClick,
+  onCheckChange,
+}: MailListItemProps) {
   return (
     <div
       onClick={onClick}
       className={cn(
         'p-4 border-b border-gray-200 cursor-pointer transition-colors',
         isSelected ? 'bg-primary-50' : 'hover:bg-gray-50',
-        !mail.is_read && 'bg-blue-50'
+        !mail.is_read && 'bg-blue-50 hover:bg-blue-100',
+        isChecked && 'bg-primary-50'
       )}
     >
       <div className="flex items-start space-x-3">
+        {showCheckbox && (
+          <div className="flex-shrink-0 mt-1">
+            <Checkbox
+              checked={isChecked}
+              onChange={(checked) => onCheckChange?.(checked)}
+            />
+          </div>
+        )}
         <div className="flex-shrink-0 mt-1">
           {mail.is_starred ? (
             <Star size={16} className="text-yellow-500 fill-yellow-500" />

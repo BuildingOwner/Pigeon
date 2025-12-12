@@ -1,7 +1,10 @@
+'use client';
+
 import { Mail } from '@/types';
-import { Star, Folder, Trash2, Download } from 'lucide-react';
+import { Star, Folder, Trash2, Download, Sparkles, FolderOpen } from 'lucide-react';
 import { Button, SkeletonMailDetail } from '@/components/ui';
 import { formatDate, formatFileSize } from '@/lib/utils';
+import DOMPurify from 'dompurify';
 
 interface MailDetailProps {
   mail: Mail | null;
@@ -26,11 +29,19 @@ export function MailDetail({
 
   if (!mail) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500">
-        메일을 선택하세요
+      <div className="flex flex-col items-center justify-center h-full text-gray-500">
+        <FolderOpen size={48} className="mb-4 text-gray-300" />
+        <p>메일을 선택하세요</p>
       </div>
     );
   }
+
+  const sanitizedHtml = typeof window !== 'undefined'
+    ? DOMPurify.sanitize(mail.body_html, {
+        ALLOWED_TAGS: ['p', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'strong', 'em', 'span', 'div', 'table', 'tr', 'td', 'th', 'thead', 'tbody', 'img', 'blockquote', 'pre', 'code'],
+        ALLOWED_ATTR: ['href', 'src', 'alt', 'style', 'class', 'target'],
+      })
+    : mail.body_html;
 
   return (
     <div className="flex flex-col h-full">
@@ -101,6 +112,31 @@ export function MailDetail({
         </div>
       </div>
 
+      {mail.is_classified && (mail.folder || mail.classification_reason) && (
+        <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-blue-50">
+          <div className="flex items-start space-x-3">
+            <Sparkles size={20} className="text-primary-600 mt-0.5" />
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-1">
+                AI 분류 정보
+              </h3>
+              {mail.folder && (
+                <p className="text-sm text-gray-600 mb-1">
+                  <span className="text-gray-500">분류 폴더:</span>{' '}
+                  <span className="font-medium">{mail.folder.path}</span>
+                </p>
+              )}
+              {mail.classification_reason && (
+                <p className="text-sm text-gray-600">
+                  <span className="text-gray-500">분류 이유:</span>{' '}
+                  {mail.classification_reason}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {mail.attachments.length > 0 && (
         <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
           <h3 className="text-sm font-semibold text-gray-700 mb-2">
@@ -133,8 +169,8 @@ export function MailDetail({
 
       <div className="flex-1 overflow-y-auto p-6">
         <div
-          className="prose max-w-none"
-          dangerouslySetInnerHTML={{ __html: mail.body_html }}
+          className="prose prose-sm max-w-none prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline"
+          dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
         />
       </div>
     </div>
