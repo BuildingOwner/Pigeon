@@ -9,3 +9,4 @@ export * from './ContextMenu';
 export * from './ProgressBar';
 export * from './SearchInput';
 export * from './Checkbox';
+export * from './ResizeHandle';

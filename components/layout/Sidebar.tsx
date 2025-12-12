@@ -212,9 +212,9 @@ export function Sidebar({
   };
 
   return (
-    <aside className="w-60 bg-gray-50 border-r border-gray-200 overflow-y-auto flex-shrink-0">
-      <div className="p-4">
-        <div className="mb-4">
+    <aside className="w-full bg-gray-50 border-r border-gray-200 flex-shrink-0 flex flex-col h-full">
+      <div className="p-4 flex flex-col h-full overflow-hidden">
+        <div className="mb-4 flex-shrink-0">
           <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">가상 폴더</h3>
           <div className="space-y-1">
             {virtualFolders.map((vFolder) => (
@@ -242,8 +242,8 @@ export function Sidebar({
           </div>
         </div>
 
-        <div>
-          <div className="flex items-center justify-between mb-2">
+        <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex items-center justify-between mb-2 flex-shrink-0">
             <h3 className="text-xs font-semibold text-gray-500 uppercase">내 폴더</h3>
             <button
               onClick={() => setIsCreatingFolder(true)}
@@ -255,7 +255,7 @@ export function Sidebar({
           </div>
 
           {isCreatingFolder && (
-            <div className="flex items-center space-x-2 mb-2 px-3 py-2">
+            <div className="flex items-center space-x-2 mb-2 px-3 py-2 flex-shrink-0">
               <FolderOpen size={16} className="text-gray-400" />
               <input
                 type="text"
@@ -280,7 +280,7 @@ export function Sidebar({
             </div>
           )}
 
-          <div className="space-y-1">
+          <div className="space-y-1 overflow-y-auto flex-1">
             {folders.map((folder) => renderFolder(folder))}
           </div>
 

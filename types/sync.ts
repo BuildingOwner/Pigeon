@@ -12,3 +12,17 @@ export interface SyncStatus {
   completed_at: string | null;
   estimated_remaining: number | null;
 }
+
+export interface ClassificationStatus {
+  classification_id: string;
+  state: 'pending' | 'in_progress' | 'completed' | 'failed' | 'cancelled';
+  summary: {
+    total: number;
+    success: number;
+    failed: number;
+    new_folders_created: number;
+  };
+  started_at: string | null;
+  completed_at: string | null;
+  error: string | null;
+}
