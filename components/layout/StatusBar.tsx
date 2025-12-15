@@ -31,11 +31,11 @@ export function StatusBar({
       return (
         <button
           onClick={onShowSyncDetail}
-          className="flex items-center space-x-2 hover:bg-gray-100 rounded-md px-2 py-1 -ml-2 transition-colors"
+          className="flex items-center gap-1 hover:bg-gray-100 rounded px-1.5 py-0.5 transition-colors"
         >
-          <CheckCircle size={16} className="text-green-600" />
-          <span className="text-sm text-gray-700">동기화 완료</span>
-          <ChevronUp size={14} className="text-gray-400" />
+          <CheckCircle size={14} className="text-green-600" />
+          <span className="text-gray-700 hidden sm:inline">동기화 완료</span>
+          <ChevronUp size={12} className="text-gray-400" />
         </button>
       );
     }
@@ -44,18 +44,16 @@ export function StatusBar({
       return (
         <button
           onClick={onShowSyncDetail}
-          className="flex items-center space-x-3 hover:bg-gray-100 rounded-md px-2 py-1 -ml-2 transition-colors"
+          className="flex items-center gap-1.5 hover:bg-gray-100 rounded px-1.5 py-0.5 transition-colors"
         >
-          <div className="flex items-center space-x-2">
-            <Loader2 size={16} className="animate-spin text-primary-600" />
-            <span className="text-sm text-gray-700">
-              동기화 중... {syncStatus.progress.percentage}%
-            </span>
-          </div>
-          <div className="w-24">
+          <Loader2 size={14} className="animate-spin text-primary-600" />
+          <span className="text-gray-700">
+            {syncStatus.progress.percentage}%
+          </span>
+          <div className="w-16 hidden sm:block">
             <ProgressBar value={syncStatus.progress.percentage} size="sm" />
           </div>
-          <ChevronUp size={14} className="text-gray-400" />
+          <ChevronUp size={12} className="text-gray-400" />
         </button>
       );
     }
@@ -64,11 +62,11 @@ export function StatusBar({
       return (
         <button
           onClick={onShowSyncDetail}
-          className="flex items-center space-x-2 hover:bg-gray-100 rounded-md px-2 py-1 -ml-2 transition-colors"
+          className="flex items-center gap-1 hover:bg-gray-100 rounded px-1.5 py-0.5 transition-colors"
         >
-          <AlertCircle size={16} className="text-red-600" />
-          <span className="text-sm text-red-700">동기화 실패</span>
-          <ChevronUp size={14} className="text-gray-400" />
+          <AlertCircle size={14} className="text-red-600" />
+          <span className="text-red-700 hidden sm:inline">실패</span>
+          <ChevronUp size={12} className="text-gray-400" />
         </button>
       );
     }
@@ -77,11 +75,11 @@ export function StatusBar({
     return (
       <button
         onClick={onShowSyncDetail}
-        className="flex items-center space-x-2 hover:bg-gray-100 rounded-md px-2 py-1 -ml-2 transition-colors"
+        className="flex items-center gap-1 hover:bg-gray-100 rounded px-1.5 py-0.5 transition-colors"
       >
-        <CheckCircle size={16} className="text-green-600" />
-        <span className="text-sm text-gray-700">동기화 완료</span>
-        <ChevronUp size={14} className="text-gray-400" />
+        <CheckCircle size={14} className="text-green-600" />
+        <span className="text-gray-700 hidden sm:inline">동기화 완료</span>
+        <ChevronUp size={12} className="text-gray-400" />
       </button>
     );
   };
@@ -101,25 +99,16 @@ export function StatusBar({
       return (
         <button
           onClick={onShowClassificationDetail}
-          className="flex items-center space-x-3 ml-4 pl-4 border-l border-gray-200 hover:bg-gray-100 rounded-md px-2 py-1 transition-colors"
+          className="flex items-center gap-1.5 ml-2 pl-2 border-l border-gray-200 hover:bg-gray-100 rounded px-1.5 py-0.5 transition-colors"
         >
-          <div className="flex items-center space-x-2">
-            <Sparkles size={16} className="animate-pulse text-purple-600" />
-            <span className="text-sm text-gray-700">
-              AI 분류 중... {totalProcessed > 0 ? `${totalProcessed}개 완료` : ''}
-            </span>
+          <Sparkles size={14} className="animate-pulse text-purple-600" />
+          <span className="text-gray-700">
+            <span className="hidden sm:inline">분류 </span>{overallProgress}%
+          </span>
+          <div className="w-12 hidden sm:block">
+            <ProgressBar value={overallProgress} size="sm" color="purple" />
           </div>
-          {totalUnclassified > 0 && (
-            <>
-              <div className="w-20">
-                <ProgressBar value={overallProgress} size="sm" color="purple" />
-              </div>
-              <span className="text-xs text-gray-500">
-                {totalUnclassified - totalProcessed}개 남음
-              </span>
-            </>
-          )}
-          <ChevronUp size={14} className="text-gray-400" />
+          <ChevronUp size={12} className="text-gray-400" />
         </button>
       );
     }
@@ -129,13 +118,13 @@ export function StatusBar({
       return (
         <button
           onClick={onShowClassificationDetail}
-          className="flex items-center space-x-2 ml-4 pl-4 border-l border-gray-200 hover:bg-gray-100 rounded-md px-2 py-1 transition-colors"
+          className="flex items-center gap-1 ml-2 pl-2 border-l border-gray-200 hover:bg-gray-100 rounded px-1.5 py-0.5 transition-colors"
         >
-          <AlertCircle size={16} className="text-amber-500" />
-          <span className="text-sm text-gray-700">
-            미분류 {totalUnclassified}개
+          <AlertCircle size={14} className="text-amber-500" />
+          <span className="text-gray-700">
+            <span className="hidden sm:inline">미분류 </span>{totalUnclassified}
           </span>
-          <ChevronUp size={14} className="text-gray-400" />
+          <ChevronUp size={12} className="text-gray-400" />
         </button>
       );
     }
@@ -144,28 +133,28 @@ export function StatusBar({
     return (
       <button
         onClick={onShowClassificationDetail}
-        className="flex items-center space-x-2 ml-4 pl-4 border-l border-gray-200 hover:bg-gray-100 rounded-md px-2 py-1 transition-colors"
+        className="flex items-center gap-1 ml-2 pl-2 border-l border-gray-200 hover:bg-gray-100 rounded px-1.5 py-0.5 transition-colors"
       >
-        <Sparkles size={16} className="text-purple-600" />
-        <span className="text-sm text-gray-700">분류 완료</span>
-        <ChevronUp size={14} className="text-gray-400" />
+        <Sparkles size={14} className="text-purple-600" />
+        <span className="text-gray-700 hidden sm:inline">분류 완료</span>
+        <ChevronUp size={12} className="text-gray-400" />
       </button>
     );
   };
 
   return (
-    <div className="bg-white border-t border-gray-200 px-6 py-3 flex items-center justify-between text-sm">
-      <div className="flex items-center space-x-4">
+    <div className="bg-white border-t border-gray-200 px-3 md:px-6 py-1.5 flex items-center justify-between text-xs md:text-sm gap-2 overflow-x-auto">
+      <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
         {renderSyncStatus()}
         {renderClassificationStatus()}
       </div>
 
-      <div className="flex items-center space-x-4 text-gray-600">
+      <div className="flex items-center gap-2 md:gap-4 text-gray-600 flex-shrink-0">
         {totalMailCount !== undefined && (
-          <span>총 {totalMailCount.toLocaleString()}개 메일</span>
+          <span className="whitespace-nowrap">{totalMailCount.toLocaleString()}개</span>
         )}
         {lastSyncAt && (
-          <span>마지막 확인: {formatRelativeTime(lastSyncAt)}</span>
+          <span className="whitespace-nowrap hidden sm:inline">{formatRelativeTime(lastSyncAt)}</span>
         )}
       </div>
     </div>

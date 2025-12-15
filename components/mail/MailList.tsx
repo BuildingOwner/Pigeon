@@ -64,55 +64,58 @@ export function MailList({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white">
-        <div className="flex items-center space-x-3">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-gray-200 bg-white">
+        <div className="flex items-center gap-2">
           <Checkbox
             checked={allSelected}
             indeterminate={someSelected}
             onChange={handleSelectAllChange}
           />
-          <span className="text-sm text-gray-600">
+          <span className="text-xs text-gray-600">
             {hasSelection
-              ? `${selectedMailIds.length}개 선택됨`
+              ? `${selectedMailIds.length}개 선택`
               : '전체 선택'
             }
           </span>
         </div>
 
         {hasSelection && (
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-1">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onBulkMarkRead?.(selectedMailIds)}
               title="읽음으로 표시"
+              className="p-1.5"
             >
-              <MailOpen size={16} />
+              <MailOpen size={14} />
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onBulkMarkUnread?.(selectedMailIds)}
               title="안읽음으로 표시"
+              className="p-1.5"
             >
-              <Mail size={16} />
+              <Mail size={14} />
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onBulkMove?.(selectedMailIds)}
               title="이동"
+              className="p-1.5"
             >
-              <FolderInput size={16} />
+              <FolderInput size={14} />
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onBulkDelete?.(selectedMailIds)}
               title="삭제"
-              className="text-red-600 hover:bg-red-50"
+              className="p-1.5 text-red-600 hover:bg-red-50"
             >
-              <Trash2 size={16} />
+              <Trash2 size={14} />
             </Button>
           </div>
         )}

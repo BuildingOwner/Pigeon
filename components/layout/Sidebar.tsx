@@ -212,8 +212,8 @@ export function Sidebar({
   };
 
   return (
-    <aside className="w-full bg-gray-50 border-r border-gray-200 flex-shrink-0 flex flex-col h-full">
-      <div className="p-4 flex flex-col h-full overflow-hidden">
+    <aside className="w-full bg-gray-50 border-r border-gray-200 flex-shrink-0 flex flex-col h-full overflow-y-auto">
+      <div className="p-4 flex flex-col flex-1 min-h-0">
         <div className="mb-4 flex-shrink-0">
           <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">가상 폴더</h3>
           <div className="space-y-1">

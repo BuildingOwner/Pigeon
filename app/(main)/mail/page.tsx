@@ -63,6 +63,30 @@ export default function MailPage() {
   const [sidebarWidth, setSidebarWidth] = useState(240); // 기본 240px
   const [mailListWidth, setMailListWidth] = useState(384); // 기본 384px (24rem)
 
+  // 모바일 뷰 상태 (list / detail)
+  const [mobileView, setMobileView] = useState<'list' | 'detail'>('list');
+  // 모바일 여부 감지
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // 모바일 사이드바 열림 시 배경 스크롤 방지
+  useEffect(() => {
+    if (isSidebarOpen && isMobile) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isSidebarOpen, isMobile]);
+
   // 리사이즈 핸들러
   const handleSidebarResize = useCallback((delta: number) => {
     setSidebarWidth((prev) => Math.max(180, Math.min(400, prev + delta)));
@@ -453,9 +477,34 @@ export default function MailPage() {
     }
   };
 
-  const handleSelectMail = (mailId: number) => {
+  const handleSelectMail = async (mailId: number) => {
     setSelectedMailId(mailId);
     fetchMailDetail(mailId);
+    // 모바일에서 상세 뷰로 전환
+    setMobileView('detail');
+
+    // 선택한 메일이 안 읽음 상태인 경우 읽음 처리
+    const mail = mails.find((m) => m.id === mailId);
+    if (mail && !mail.is_read) {
+      // 낙관적 UI 업데이트
+      useMailStore.getState().markMailAsRead(mailId);
+      setVirtualFolderCounts((prev) => ({
+        ...prev,
+        unread: Math.max(0, prev.unread - 1),
+      }));
+
+      // 백엔드에 읽음 처리 요청
+      try {
+        await api.patch(`/mails/${mailId}/`, { is_read: true });
+      } catch (error) {
+        console.error('Failed to mark mail as read:', error);
+      }
+    }
+  };
+
+  // 모바일에서 리스트로 돌아가기
+  const handleBackToList = () => {
+    setMobileView('list');
   };
 
   const handlePageChange = (page: number) => {
@@ -665,10 +714,19 @@ export default function MailPage() {
       />
 
       <div className="flex-1 flex overflow-hidden">
+        {/* 모바일 사이드바 오버레이 */}
+        {isSidebarOpen && (
+          <div
+            className="fixed left-0 right-0 bottom-0 bg-black bg-opacity-50 z-30 md:hidden"
+            style={{ top: '48px' }}
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
         {/* 사이드바 (리사이즈 가능) */}
         <div
-          className={`${isSidebarOpen ? 'block' : 'hidden'} md:block absolute md:relative z-40 h-full flex-shrink-0`}
-          style={{ width: sidebarWidth }}
+          className={`${isSidebarOpen ? 'fixed left-0 bg-white shadow-lg' : 'hidden'} md:block md:relative md:shadow-none z-40 flex-shrink-0`}
+          style={isMobile && isSidebarOpen ? { width: sidebarWidth, top: '48px', bottom: 0 } : { width: sidebarWidth }}
         >
           <Sidebar
             folders={folders}
@@ -686,18 +744,13 @@ export default function MailPage() {
           className="hidden md:block"
         />
 
-        {isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
-
         <div className="flex-1 flex overflow-hidden">
-          {/* 메일 목록 (리사이즈 가능) */}
+          {/* 메일 목록 - 모바일에서는 mobileView가 list일 때만 전체 너비로 표시 */}
           <div
-            className="border-r border-gray-200 overflow-hidden flex-shrink-0 w-full md:w-auto"
-            style={{ minWidth: 280, maxWidth: 600, width: mailListWidth }}
+            className={`border-r border-gray-200 overflow-hidden ${
+              mobileView === 'list' ? 'block' : 'hidden'
+            } md:!block md:flex-shrink-0`}
+            style={isMobile ? undefined : { minWidth: 280, maxWidth: 600, width: mailListWidth }}
           >
             <MailList
               mails={mails}
@@ -724,14 +777,18 @@ export default function MailPage() {
             className="hidden md:block"
           />
 
-          {/* 메일 상세 */}
-          <div className="hidden md:block flex-1 overflow-hidden">
+          {/* 메일 상세 - 데스크톱에서 항상 표시, 모바일에서는 mobileView가 detail일 때 표시 */}
+          <div className={`flex-1 overflow-hidden md:block ${
+            mobileView === 'detail' ? 'block' : 'hidden'
+          }`}>
             <MailDetail
               mail={selectedMail}
               onToggleStar={handleToggleStar}
               onMove={handleOpenMoveModal}
               onDelete={handleDelete}
               onDownloadAttachment={handleDownloadAttachment}
+              onBack={handleBackToList}
+              showBackButton={mobileView === 'detail'}
             />
           </div>
         </div>

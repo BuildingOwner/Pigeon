@@ -1,5 +1,3 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from './Button';
 import { Pagination as PaginationType } from '@/types';
 
 interface PaginationProps {
@@ -14,32 +12,28 @@ export function Pagination({ pagination, onPageChange }: PaginationProps) {
   const end = Math.min(page * page_size, total_count);
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200">
-      <div className="text-sm text-gray-700">
+    <div className="flex items-center justify-between px-3 py-1.5 border-t border-gray-200 text-xs">
+      <div className="text-gray-600">
         {start}-{end} / {total_count}개
       </div>
-      <div className="flex items-center space-x-2">
-        <Button
-          variant="ghost"
-          size="sm"
+      <div className="flex items-center gap-1">
+        <button
           onClick={() => onPageChange(page - 1)}
           disabled={!has_prev}
+          className="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          <ChevronLeft size={16} />
-          이전
-        </Button>
-        <span className="text-sm text-gray-700">
+          &lt; <span className="hidden sm:inline">이전</span>
+        </button>
+        <span className="text-gray-600 px-1">
           {page} / {total_pages}
         </span>
-        <Button
-          variant="ghost"
-          size="sm"
+        <button
           onClick={() => onPageChange(page + 1)}
           disabled={!has_next}
+          className="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          다음
-          <ChevronRight size={16} />
-        </Button>
+          <span className="hidden sm:inline">다음</span> &gt;
+        </button>
       </div>
     </div>
   );

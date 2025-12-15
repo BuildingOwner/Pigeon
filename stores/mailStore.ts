@@ -19,6 +19,7 @@ interface MailStore {
   toggleMailSelection: (id: number) => void;
   selectAllMails: () => void;
   clearSelection: () => void;
+  markMailAsRead: (id: number) => void;
 }
 
 export const useMailStore = create<MailStore>((set, get) => ({
@@ -55,4 +56,13 @@ export const useMailStore = create<MailStore>((set, get) => ({
   },
 
   clearSelection: () => set({ selectedMailIds: [] }),
+
+  markMailAsRead: (id) => {
+    const { mails } = get();
+    set({
+      mails: mails.map((mail) =>
+        mail.id === id ? { ...mail, is_read: true } : mail
+      ),
+    });
+  },
 }));

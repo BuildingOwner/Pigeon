@@ -28,9 +28,13 @@ export function MailListItem({
       onClick={onClick}
       className={cn(
         'p-4 border-b border-gray-200 cursor-pointer transition-colors',
-        isSelected ? 'bg-primary-50' : 'hover:bg-gray-50',
-        !mail.is_read && 'bg-blue-50 hover:bg-blue-100',
-        isChecked && 'bg-primary-50'
+        isSelected
+          ? 'bg-primary-100 border-l-4 border-l-primary-500'
+          : isChecked
+            ? 'bg-primary-50'
+            : !mail.is_read
+              ? 'bg-blue-50 hover:bg-blue-100'
+              : 'hover:bg-gray-50'
       )}
     >
       <div className="flex items-start space-x-3">
